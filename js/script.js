@@ -1,5 +1,9 @@
 window.onload = function () {
     let arrayCartasGiradas = [];
+    let contador = 0;
+    let tiempoSegundos = 0;
+    let intervaloTemporizador;
+    let temporizadorDiv = document.getElementById("temporizador");
 
     function crearCarta(pais) {
         const carta = document.createElement("div");
@@ -34,6 +38,8 @@ window.onload = function () {
     }
 
     function controlarClickCarta(carta) {
+        
+
         carta.addEventListener("click", function () {
             if (
                 arrayCartasGiradas.length < 2 &&
@@ -41,6 +47,7 @@ window.onload = function () {
                 !carta.classList.contains("bloqueada")
             ) {
                 carta.classList.toggle("girada");
+
                 arrayCartasGiradas.push(carta);
 
                 if (arrayCartasGiradas.length === 2) {
@@ -72,24 +79,50 @@ window.onload = function () {
                         }, 1000);
                     }
 
+                    contador++;
                     arrayCartasGiradas = [];
+                    let divContador = document.getElementById("contador");
+                    divContador.innerHTML = "Intentos: " + contador;
+
                 }
             }
 
-            console.log(
-                document.querySelectorAll(".carta.girada.bloqueada").length
-            );
-
+            
             if (
                 document.querySelectorAll(".carta.girada.bloqueada").length ===
                 16
             ) {
-                alert("¡Has ganado! Eres un máquena");
+                // Aqui cuando se acaba la partida se para el temporizador, se reproduce el sonido y se muestra un mensaje con el tiempo y los intentos
+                // Tuve que meter el alert en un interval porque si saltaba a la vez que el sonido dejaba de funcionar.
+                clearInterval(intervaloTemporizador); 
+                sonido.play();
+
+                setTimeout(function () {
+                    alert("¡Has ganado! Eres un máquena");
+                    alert("Has tardado " + temporizadorDiv.innerHTML + " y has necesitado " + contador + " intentos");
+                }, 1000);
             }
         });
     }
 
     function empezarJuego() {
+        
+        // Esto es para que pueda sonar el sonido en al ganar en chrome, son cosas suyas de seguridad.
+        let context = new AudioContext();
+        context.resume();
+        
+        // Reiniciamos la variable del contador de intentos y el numero en el HTML
+        contador = 0;
+        let divContador = document.getElementById("contador");
+        divContador.innerHTML = "Intentos: " + contador;
+
+        // Reiniciamos el temporizador en el HTML, el contador de segundos y el intervalo, luego iniciamos el intervalo de nuevo.
+        temporizadorDiv.innerHTML = "00:00";
+        tiempoSegundos = 0;
+        clearInterval(intervaloTemporizador);
+        intervaloTemporizador = setInterval(actualizarReloj, 1000);
+
+
         const contenedorJuego = document.querySelector("#juego");
         contenedorJuego.innerHTML = "";
 
@@ -121,7 +154,30 @@ window.onload = function () {
         });
     }
 
- 
+    // crear sonido con la libreria Howler
+    var sonido = new Howl({
+        src: ["sound/FF_Victoria.mp3"],
+    });
+
+
+    function actualizarReloj() {
+        let minutos = Math.floor(tiempoSegundos / 60); 
+        let segundos = tiempoSegundos % 60;
+      
+        // Formateamos los minutos y segundos para que siempre tengan dos dígitos, tuve que buscarlo porque si no quedaba feo
+        let minutosFormateado = minutos.toString().padStart(2, "0");
+        let segundosFormateado = segundos.toString().padStart(2, "0");
+      
+        // Actualizamos el contenido del div con el formato "MM:SS"
+        temporizadorDiv.innerHTML = `${minutosFormateado}:${segundosFormateado}`;
+      
+        // Incrementamos el contador de segundos
+        tiempoSegundos++;
+      }
+
+
+
+
 
     const botonInicio = document.getElementById("botonInicio");
     botonInicio.addEventListener("click", empezarJuego);
