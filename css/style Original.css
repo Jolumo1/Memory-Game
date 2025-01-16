@@ -13,6 +13,16 @@ body {
     background-color: #f4f4f4;
 }
 
+h2 {
+    
+    font-family: "Inter", serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: italic;
+  
+  color: #f35d00;
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -32,7 +42,7 @@ body {
     align-items: center;
     background-color: bisque;
     border-radius: 15px;
-    justify-content: center; 
+    justify-content: center;
     padding: 10px;
 }
 
@@ -63,8 +73,8 @@ button:hover {
     background-color: bisque;
     border-radius: 15px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    grid-template-rows: repeat(4, 1fr); 
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     gap: 10px;
     padding: 10px;
 }
@@ -75,26 +85,61 @@ button:hover {
     border-radius: 15px;
     display: flex;
     cursor: pointer;
-    transition: 0.5s;
-}   
+    position: relative;
+    transition: transform 0.5s ease; /* Transición suave de rotación */
+    transform-style: preserve-3d; /* Necesario para la rotación 3D */
+}
 
 .carta img {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
 }
 
-.carta .caraFrontal{
+.carta .caraFrontal {
     display: none;
+    backface-visibility: hidden; /* Evita que la cara frontal se vea durante el giro */
+    transform: rotateY(180deg); /* Mantener la cara frontal oculta al inicio */
 }
 
-.carta.girada .caraFrontal{
+.carta.girada {
+    transform: rotateY(
+        180deg
+    ); /* Volteamos la carta 180 grados cuando se le añade la clase 'girada' */
+}
+
+.carta.girada .caraFrontal {
     display: block;
 }
 
-.carta.girada .caraTrasera{
+.carta.girada .caraTrasera {
     display: none;
 }
 
 
+.contenedorPuntos {
+    
+    display: flex; 
+    gap: 100px; 
+    justify-content:center;
 
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #ffa034;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+    width: 100%;
 
+  }
+
+  .contenedorBotones {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+  }

@@ -3,10 +3,7 @@ window.onload = function () {
     let contador = 0;
     let tiempoSegundos = 0;
     let intervaloTemporizador;
-    let dificultad = 0;
     let temporizadorDiv = document.getElementById("temporizador");
-    let mensajeFinalDiv = document.getElementById("mensajeFinal");
-    
 
     function crearCarta(pais) {
         const carta = document.createElement("div");
@@ -40,92 +37,9 @@ window.onload = function () {
         return cartas.sort(() => Math.random() - 0.5);
     }
 
-    function empezarJuego(dificultad) {
-        // Esto es para que pueda sonar el sonido en al ganar en chrome, son cosas suyas de seguridad.
-        let context = new AudioContext();
-        context.resume();
-        // Reiniciamos la variable del contador de intentos y el numero en el HTML
-        contador = 0;
-        // Reinicio tambien el mensaje final
-        mensajeFinalDiv.style.display = "none";
-
-        // Reiniciamos el temporizador en el HTML, el contador de segundos y el intervalo, luego iniciamos el intervalo con el temporizador de nuevo.
-        let divContador = document.getElementById("contador");
-        divContador.innerHTML = "Intentos: " + contador;
-        
-        temporizadorDiv.innerHTML = "00:00";
-        tiempoSegundos = 0;
-        clearInterval(intervaloTemporizador);
-        intervaloTemporizador = setInterval(actualizarReloj, 1000);
-
-        const contenedorJuego = document.querySelector("#juego");
-        contenedorJuego.innerHTML = "";
-        const arrayImagenes = [
-            "alemania",
-            "argentina",
-            "brasil",
-            "china",
-            "eeuu",
-            "japon",
-            "mexico",
-            "spain",
-            "canada",
-            "checa",
-            "francia",
-            "irlanda",
-            "italia",
-            "korea",
-            "portugal",
-            "suecia",
-            "mauritania",
-            "egipto",
-            "holanda",
-            "hongkong",
-            "australia",
-            "finlandia",
-            "rumania",
-            "georgia",
-            "grecia",
-            "uruguay",
-            "marruecos",
-            "nigeria",
-            "seycheles",
-            "angola",
-            "salvador",
-            "suiza",
-        ];
-
-        const arrayCartas = [];
-        let numParejas;
-
-        if (dificultad === 4) {
-            numParejas = 8;
-        } else {
-            numParejas = 18;
-        }
-
-        for (let i = 0; i < 2; i++) {
-            for (let j = 0; j < numParejas; j++) {
-                const carta = crearCarta(arrayImagenes[j]);
-                arrayCartas.push(carta);
-            }
-        }
-
-        const cartasMezcladas = mezclarCartas(arrayCartas);
-
-        cartasMezcladas.forEach(function (carta) {
-            contenedorJuego.appendChild(carta);
-            controlarClickCarta(carta);
-        });
-
-        if (dificultad === 6) {
-            contenedorJuego.classList.add("grid-6x6");
-        } else {
-            contenedorJuego.classList.remove("grid-6x6");
-        }
-    }
-
     function controlarClickCarta(carta) {
+        
+
         carta.addEventListener("click", function () {
             if (
                 arrayCartasGiradas.length < 2 &&
@@ -133,14 +47,18 @@ window.onload = function () {
                 !carta.classList.contains("bloqueada")
             ) {
                 carta.classList.toggle("girada");
+
                 arrayCartasGiradas.push(carta);
+
                 if (arrayCartasGiradas.length === 2) {
                     const carta1 = arrayCartasGiradas[0];
                     const carta2 = arrayCartasGiradas[1];
+
                     const todasLasCartas = document.querySelectorAll(".carta");
                     todasLasCartas.forEach((carta) =>
                         carta.classList.add("bloqueoTemporal")
                     );
+
                     if (
                         carta1.getAttribute("pais") ===
                             carta2.getAttribute("pais") &&
@@ -160,42 +78,79 @@ window.onload = function () {
                             );
                         }, 1000);
                     }
+
                     contador++;
                     arrayCartasGiradas = [];
                     let divContador = document.getElementById("contador");
                     divContador.innerHTML = "Intentos: " + contador;
+
                 }
             }
-            
-            let numCartasGiradaBloqueada;
-            
-            if(dificultad == 4){
-                numCartasGiradaBloqueada = 16;
-            }else{
-                numCartasGiradaBloqueada = 36;
-            }
 
+            
             if (
                 document.querySelectorAll(".carta.girada.bloqueada").length ===
-                numCartasGiradaBloqueada
+                16
             ) {
                 // Aqui cuando se acaba la partida se para el temporizador, se reproduce el sonido y se muestra un mensaje con el tiempo y los intentos
                 // Tuve que meter el alert en un interval porque si saltaba a la vez que el sonido dejaba de funcionar.
-
-                clearInterval(intervaloTemporizador);
+                clearInterval(intervaloTemporizador); 
                 sonido.play();
+
                 setTimeout(function () {
-                                        
-                    mensajeFinalDiv.innerHTML =
-                        "¡HAS GANADO! TU TIEMPO: " +
-                        temporizadorDiv.innerHTML +
-                        ", HAS NECESITADO " +
-                        contador +
-                        " INTENTOS";
-                    mensajeFinalDiv.style.display = "block";
-                   
+                    alert("¡Has ganado! Eres un máquena");
+                    alert("Has tardado " + temporizadorDiv.innerHTML + " y has necesitado " + contador + " intentos");
                 }, 1000);
             }
+        });
+    }
+
+    function empezarJuego() {
+        
+        // Esto es para que pueda sonar el sonido en al ganar en chrome, son cosas suyas de seguridad.
+        let context = new AudioContext();
+        context.resume();
+        
+        // Reiniciamos la variable del contador de intentos y el numero en el HTML
+        contador = 0;
+        let divContador = document.getElementById("contador");
+        divContador.innerHTML = "Intentos: " + contador;
+
+        // Reiniciamos el temporizador en el HTML, el contador de segundos y el intervalo, luego iniciamos el intervalo de nuevo.
+        temporizadorDiv.innerHTML = "00:00";
+        tiempoSegundos = 0;
+        clearInterval(intervaloTemporizador);
+        intervaloTemporizador = setInterval(actualizarReloj, 1000);
+
+
+        const contenedorJuego = document.querySelector("#juego");
+        contenedorJuego.innerHTML = "";
+
+        const arrayImagenes = [
+            "alemania",
+            "argentina",
+            "brasil",
+            "china",
+            "eeuu",
+            "japon",
+            "mexico",
+            "spain",
+        ];
+
+        const arrayCartas = [];
+
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < arrayImagenes.length; j++) {
+                const carta = crearCarta(arrayImagenes[j]);
+                arrayCartas.push(carta);
+            }
+        }
+
+        const cartasMezcladas = mezclarCartas(arrayCartas);
+
+        cartasMezcladas.forEach(function (carta) {
+            contenedorJuego.appendChild(carta);
+            controlarClickCarta(carta);
         });
     }
 
@@ -204,27 +159,26 @@ window.onload = function () {
         src: ["sound/FF_Victoria.mp3"],
     });
 
+
     function actualizarReloj() {
-        let minutos = Math.floor(tiempoSegundos / 60);
+        let minutos = Math.floor(tiempoSegundos / 60); 
         let segundos = tiempoSegundos % 60;
+      
         // Formateamos los minutos y segundos para que siempre tengan dos dígitos, tuve que buscarlo porque si no quedaba feo
         let minutosFormateado = minutos.toString().padStart(2, "0");
         let segundosFormateado = segundos.toString().padStart(2, "0");
+      
         // Actualizamos el contenido del div con el formato "MM:SS"
         temporizadorDiv.innerHTML = `${minutosFormateado}:${segundosFormateado}`;
+      
         // Incrementamos el contador de segundos
         tiempoSegundos++;
-    }
+      }
+
+
+
+
 
     const botonInicio = document.getElementById("botonInicio");
-    botonInicio.addEventListener("click", function () {
-        dificultad = 4;
-        empezarJuego(dificultad);
-    });
-
-    const botonInicio2 = document.getElementById("botonInicio2");
-    botonInicio2.addEventListener("click", function () {
-        dificultad = 6;
-        empezarJuego(dificultad);
-    });
+    botonInicio.addEventListener("click", empezarJuego);
 };
