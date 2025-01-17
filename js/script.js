@@ -78,21 +78,7 @@ window.onload = function () {
             "portugal",
             "suecia",
             "mauritania",
-            "egipto",
-            "holanda",
-            "hongkong",
-            "australia",
-            "finlandia",
-            "rumania",
-            "georgia",
-            "grecia",
-            "uruguay",
-            "marruecos",
-            "nigeria",
-            "seycheles",
-            "angola",
-            "salvador",
-            "suiza",
+            "egipto"
         ];
 
         const arrayCartas = [];
