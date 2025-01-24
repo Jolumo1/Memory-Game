@@ -2,6 +2,14 @@
 
 **Memory Card Game** is an interactive memory game where players need to match cards based on the countries' flags. The goal is to find all pairs of matching cards in the shortest possible time and with the fewest attempts. This game is designed to challenge your memory and attention to detail, with a timer and attempt counter to keep track of your progress.
 
+## Live Demo:
+https://jolumo1.github.io/Memory-Game/
+
+<br>
+![Vista previa de la tienda](img_readme/1.png)
+<br>
+
+
 ## Features:
 - **Flag Matching**: The game displays cards with flags of different countries. The player needs to match pairs of flags by flipping cards.
 - **Timer**: A timer tracks how long the player takes to complete the game.
