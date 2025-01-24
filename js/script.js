@@ -7,7 +7,7 @@ window.onload = function () {
     let temporizadorDiv = document.getElementById("temporizador");
     let mensajeFinalDiv = document.getElementById("mensajeFinal");
     
-
+    // funcion para crear el div de la carta, le entra por parametro el pais.
     function crearCarta(pais) {
         const carta = document.createElement("div");
         carta.classList.add("carta");
@@ -39,7 +39,10 @@ window.onload = function () {
     function mezclarCartas(cartas) {
         return cartas.sort(() => Math.random() - 0.5);
     }
-
+    // funcion para empezar el juego, le entra por parametro la dificultad, para crear las cartas y el tablero correspondiente.
+    // Tambien reinicia el temporizador y el contador de intentos.
+    // Al final de la funcion se comprueba si se han girado todas las cartas y se muestra un mensaje con el tiempo y los intentos.
+    // 
     function empezarJuego(dificultad) {
         // Esto es para que pueda sonar el sonido en al ganar en chrome, son cosas suyas de seguridad.
         let context = new AudioContext();
@@ -52,7 +55,6 @@ window.onload = function () {
         // Reiniciamos el temporizador en el HTML, el contador de segundos y el intervalo, luego iniciamos el intervalo con el temporizador de nuevo.
         let divContador = document.getElementById("contador");
         divContador.innerHTML = "Intentos: " + contador;
-        
         temporizadorDiv.innerHTML = "00:00";
         tiempoSegundos = 0;
         clearInterval(intervaloTemporizador);
@@ -111,6 +113,8 @@ window.onload = function () {
         }
     }
 
+    // funcion para controlar el click en la carta, le entra por parametro la carta. y le aplica la clase girada, bloqueada y bloqueo temporal 
+    // para que no se pueda girar mientras se estan comparando las cartas o se quede girada si son iguales.
     function controlarClickCarta(carta) {
         carta.addEventListener("click", function () {
             if (
@@ -178,8 +182,7 @@ window.onload = function () {
                         ", HAS NECESITADO " +
                         contador +
                         " INTENTOS";
-                    mensajeFinalDiv.style.display = "block";
-                   
+                    mensajeFinalDiv.style.display = "block";                   
                 }, 1000);
             }
         });
@@ -190,6 +193,7 @@ window.onload = function () {
         src: ["sound/FF_Victoria.mp3"],
     });
 
+    // funcion para actualizar el reloj y aplicarle el formateo para que quede bonito
     function actualizarReloj() {
         let minutos = Math.floor(tiempoSegundos / 60);
         let segundos = tiempoSegundos % 60;
@@ -202,6 +206,8 @@ window.onload = function () {
         tiempoSegundos++;
     }
 
+
+    // Localizamos los botones y llama a la funcion empezarJuego con la dificultad correspondiente al boton pulsado
     const botonInicio = document.getElementById("botonInicio");
     botonInicio.addEventListener("click", function () {
         dificultad = 4;

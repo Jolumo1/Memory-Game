@@ -66,18 +66,14 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
+    /*gap: 10px;*/
     padding: 10px;
   }
 
   #juego.grid-6x6 { grid-template-columns: repeat(6, 1fr);
-     grid-template-rows: repeat(6, 1fr);
-     min-width: 970px;
-     min-height: 970px; }
-
-
-
-
+    grid-template-rows: repeat(6, 1fr);
+    min-width: 920px;
+    min-height: 920px; }
   
   .carta {
     height: 150px;
