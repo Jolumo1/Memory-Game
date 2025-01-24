@@ -6,7 +6,9 @@
 https://jolumo1.github.io/Memory-Game/
 
 <br>
+
 ![Vista previa de la tienda](img_readme/1.png)
+
 <br>
 
 
